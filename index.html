@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STM32 ⇄ ST-LINK Power Lab: interactive 3D wiring guide</title>
+  <meta name="description" content="Interactive 3D, step-by-step guide to wiring an STM32 (Blue Pill or Nucleo-64) to an ST-LINK (V3PWR or V2 + multimeter) for current and power measurements." />
+  <meta name="theme-color" content="#0d1424" />
+  <meta property="og:title" content="STM32 ⇄ ST-LINK Power Lab" />
+  <meta property="og:description" content="Wire an STM32 to an ST-LINK for power readings with real KiCad 3D models, guided and practice modes, and a live current simulator." />
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <a class="skip" href="#panel">Skip to instructions</a>
+  <header class="top">
+    <div class="brand"><span class="logo" aria-hidden="true">⚡</span><div><b>Power Lab</b><small>STM32 ⇄ ST-LINK</small></div></div>
+    <div class="cfg">
+      <label>Board<select id="board" aria-label="Board">
+        <option value="bp">Blue Pill · STM32F103C8</option>
+        <option value="nu">Nucleo-64 · STM32L476RG</option>
+      </select></label>
+      <label>Probe<select id="probe" aria-label="Probe">
+        <option value="v3">STLINK-V3PWR (built-in meter)</option>
+        <option value="v2">ST-LINK/V2 + multimeter</option>
+      </select></label>
+      <div class="seg" role="radiogroup" aria-label="Mode">
+        <button role="radio" data-mode="guide" aria-checked="true">Guide</button>
+        <button role="radio" data-mode="practice" aria-checked="false">Practice</button>
+      </div>
+    </div>
+    <div class="tools">
+      <button class="icon" id="tg-labels" aria-pressed="false" title="All pin labels (L)">🏷️</button>
+      <button class="icon" id="tg-all" aria-pressed="false" title="Preview upcoming wires (A)">🧵</button>
+      <button class="icon" id="tg-cam" aria-pressed="true" title="Auto camera (C)">🎥</button>
+      <button class="icon" id="btn-overview" title="Overview (O)">🔭</button>
+      <button class="icon" id="btn-shot" title="Save screenshot">📸</button>
+      <button class="icon" id="btn-full" title="Fullscreen (F)">⛶</button>
+      <button class="icon" id="btn-help" title="Help (?)">?</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="steps" aria-label="Steps"><ol id="steps"></ol>
+      <div class="credits">3D component models: <a href="https://gitlab.com/kicad/libraries/kicad-packages3D" target="_blank" rel="noopener">KiCad 3D library</a> (CC-BY-SA 4.0).</div>
+    </nav>
+
+    <main class="viewport" id="viewport" aria-label="3D wiring view">
+      <div class="loading" id="loading"><div class="spinner"></div><p id="loading-text">Loading 3D models…</p><div class="lbar"><i id="loading-bar"></i></div></div>
+      <div class="legend" id="legend"></div>
+      <div class="hud" id="hud" hidden></div>
+      <div class="inspector" id="inspector" hidden></div>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      <div class="hint-drag">Drag to orbit · Scroll to zoom · Right-drag to pan · Click a pin</div>
+    </main>
+
+    <section class="panel" id="panel" aria-live="polite">
+      <div class="progress"><i id="progress"></i></div>
+      <div id="step-body"></div>
+      <div id="power"></div>
+      <div class="nav">
+        <button id="prev">← Back</button>
+        <span id="count"></span>
+        <button id="next" class="primary">Next →</button>
+      </div>
+    </section>
+  </div>
+
+  <dialog id="help">
+    <h2>How to use Power Lab</h2>
+    <ul>
+      <li><b>Guide</b> mode animates each wire. <b>Practice</b> mode asks you to click the two pins to connect yourself.</li>
+      <li>Click any glowing pin to inspect it. Use the toolbar to show all labels or preview upcoming wires.</li>
+      <li>Keys: <kbd>←</kbd>/<kbd>→</kbd> steps · <kbd>P</kbd> practice · <kbd>L</kbd> labels · <kbd>A</kbd> preview wires · <kbd>O</kbd> overview · <kbd>C</kbd> auto-camera · <kbd>F</kbd> fullscreen</li>
+      <li>The current values in the simulator are illustrative datasheet ballparks, not measurements.</li>
+    </ul>
+    <p class="small">The PCB and enclosure layouts are simplified. The ICs, headers, connectors and switches are real KiCad 3D models. Always check pin labels on your actual hardware.</p>
+    <form method="dialog"><button class="primary">Got it</button></form>
+  </dialog>
+  <noscript>This interactive guide needs JavaScript and WebGL.</noscript>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
