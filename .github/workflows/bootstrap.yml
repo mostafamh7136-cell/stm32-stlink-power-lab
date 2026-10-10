@@ -1,0 +1,25 @@
+name: Bootstrap import
+on:
+  push:
+    paths: ['.github/workflows/bootstrap.yml']
+  workflow_dispatch:
+permissions: { contents: write }
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download project bundle
+        run: |
+          curl -fsSL -L 'https://backend.composio.dev/api/v3/sl/n1NXh1Mbgv' -o /tmp/p.tgz
+          mkdir /tmp/p && tar xzf /tmp/p.tgz -C /tmp/p
+          rm -rf /tmp/p/.github
+          cp -r /tmp/p/. .
+          ls -la
+      - name: Commit
+        run: |
+          git config user.name 'power-lab-bot'
+          git config user.email 'power-lab-bot@users.noreply.github.com'
+          git add -A
+          git commit -m 'feat: STM32 ST-LINK Power Lab (three.js + TS + KiCad 3D models)'
+          git push
